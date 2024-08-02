@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nagios
+spec:
+  serviceName: nagios
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nagios
+  template:
+    metadata:
+      labels:
+        app: nagios
+    spec:
+      containers:
+      - name: nagios
+        image: jasonrivers/nagios:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/nagios.cfg
+          subPath: nagios.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/commands.cfg
+          subPath: commands.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/contacts.cfg
+          subPath: contacts.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/timeperiods.cfg
+          subPath: timeperiods.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/templates.cfg
+          subPath: templates.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/servers/app-vm1.cfg
+          subPath: app-vm1.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/servers/db-vm1.cfg
+          subPath: db-vm1.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/servers/web-vm1.cfg
+          subPath: web-vm1.cfg
+      volumes:
+      - name: nagios-config
+        configMap:
+          name: nagios-config

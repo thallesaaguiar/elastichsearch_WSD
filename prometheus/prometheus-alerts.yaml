@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: example-prometheus-rule
+  labels:
+    prometheus: example
+    role: alert-rules
+spec:
+  groups:
+  - name: example
+    rules:
+    - alert: HighMemoryUsage
+      expr: container_memory_usage_bytes > 500000000
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High memory usage detected"
+        description: "Container memory usage is above 500MB for more than 5 minutes."

@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nagios-config
+data:
+  nagios.cfg: |
+    log_file=/opt/nagios/var/nagios.log
+    cfg_file=/opt/nagios/etc/objects/commands.cfg
+    cfg_file=/opt/nagios/etc/objects/contacts.cfg
+    cfg_file=/opt/nagios/etc/objects/timeperiods.cfg
+    cfg_file=/opt/nagios/etc/objects/templates.cfg
+    cfg_file=/opt/nagios/etc/servers/app-vm1.cfg
+    cfg_file=/opt/nagios/etc/servers/db-vm1.cfg
+    cfg_file=/opt/nagios/etc/servers/web-vm1.cfg
+
+  commands.cfg: |
+    define command {
+      command_name check_ssh
+      command_line $USER1$/check_ssh $HOSTADDRESS$
+    }
+
+  contacts.cfg: |
+    define contact {
+      contact_name nagiosadmin
+      use generic-contact
+      alias Nagios Admin
+      email nagios@localhost
+    }
+
+  timeperiods.cfg: |
+    define timeperiod {
+      timeperiod_name 24x7
+      alias 24 Hours A Day, 7 Days A Week
+      sunday 00:00-24:00
+      monday 00:00-24:00
+      tuesday 00:00-24:00
+      wednesday 00:00-24:00
+      thursday 00:00-24:00
+      friday 00:00-24:00
+      saturday 00:00-24:00
+    }
+
+  templates.cfg: |
+    define host {
+      name generic-host
+      notifications_enabled 1
+      event_handler_enabled 1
+      flap_detection_enabled 1
+      failure_prediction_enabled 1
+      process_perf_data 1
+      retain_status_information 1
+      retain_nonstatus_information 1
+      register 0
+    }
+
+    define service {
+      name generic-service
+      notifications_enabled 1
+      event_handler_enabled 1
+      flap_detection_enabled 1
+      failure_prediction_enabled 1
+      process_perf_data 1
+      retain_status_information 1
+      retain_nonstatus_information 1
+      is_volatile 0
+      register 0
+    }
+
+  app-vm1.cfg: |
+    define host {
+      use generic-host
+      host_name app-vm1
+      alias App VM1
+      address 10.244.0.4
+    }
+
+    define service {
+      use generic-service
+      host_name app-vm1
+      service_description SSH
+      check_command check_ssh
+    }
+
+  db-vm1.cfg: |
+    define host {
+      use generic-host
+      host_name db-vm1
+      alias DB VM1
+      address 10.244.0.5
+    }
+
+    define service {
+      use generic-service
+      host_name db-vm1
+      service_description SSH
+      check_command check_ssh
+    }
+
+  web-vm1.cfg: |
+    define host {
+      use generic-host
+      host_name web-vm1
+      alias Web VM1
+      address 10.244.0.6
+    }
+
+    define service {
+      use generic-service
+      host_name web-vm1
+      service_description SSH
+      check_command check_ssh
+    }

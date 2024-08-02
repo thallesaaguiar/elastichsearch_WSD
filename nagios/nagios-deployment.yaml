@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nagios-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nagios-core  # Consistência nas labels
+  template:
+    metadata:
+      labels:
+        app: nagios-core  # Consistência nas labels
+    spec:
+      containers:
+      - name: nagios-container
+        image: jasonrivers/nagios:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/nagios.cfg
+          subPath: nagios.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/commands.cfg
+          subPath: commands.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/contacts.cfg
+          subPath: contacts.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/timeperiods.cfg
+          subPath: timeperiods.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/objects/templates.cfg
+          subPath: templates.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/servers/app-vm1.cfg
+          subPath: app-vm1.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/servers/db-vm1.cfg
+          subPath: db-vm1.cfg
+        - name: nagios-config
+          mountPath: /opt/nagios/etc/servers/web-vm1.cfg
+          subPath: web-vm1.cfg
+      volumes:
+      - name: nagios-config
+        configMap:
+          name: nagios-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nagios-service
+spec:
+  type: NodePort
+  selector:
+    app: nagios-core  # Consistência nas labels
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080

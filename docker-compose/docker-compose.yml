@@ -1,0 +1,20 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - nginx_data:/var/log/nginx
+    networks:
+      my_network:
+        ipv4_address: 172.20.8.2
+
+volumes:
+  nginx_data:
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.8.0/24

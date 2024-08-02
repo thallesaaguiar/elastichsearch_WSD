@@ -1,0 +1,10 @@
+---
+- name: Ensure logrotate cron job is present
+  hosts: all
+  tasks:
+    - name: Create logrotate cron job
+      cron:
+        name: "logrotate"
+        minute: "*/10"
+        hour: "2-4"
+        job: "/usr/sbin/logrotate /etc/logrotate.conf"

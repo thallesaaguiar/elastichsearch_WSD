@@ -45,3 +45,18 @@ deployment:
     storage: 5Gi
     storageClassName: ""
   clusterNodes: "elasticsearch-0,elasticsearch-1,elasticsearch-2"
+
+cluster:
+  initial_master_nodes: ["customer-abc-elasticsearch-0"]
+  discovery.seed_hosts: ["customer-abc-elasticsearch-0"]
+
+node:
+  master: true
+  data: true
+  ingest: true
+  name: customer-abc-elasticsearch
+
+network:
+  host: 0.0.0.0
+
+mysecret: "some-secret-value"

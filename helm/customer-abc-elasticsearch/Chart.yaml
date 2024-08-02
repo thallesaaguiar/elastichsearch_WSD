@@ -1,0 +1,5 @@
+apiVersion: v2
+name: customer-abc-elasticsearch
+description: A Helm chart for Elasticsearch
+version: 0.1.0
+appVersion: "7.10.0"
