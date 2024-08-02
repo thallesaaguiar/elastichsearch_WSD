@@ -1,12 +1,13 @@
----
-- name: Install and configure NTPD
+- name: Deploy NTPD
   hosts: all
+  become: true
   tasks:
-    - name: Install ntp package
+    - name: Ensure ntp is installed
       apt:
         name: ntp
         state: present
-    - name: Configure NTPD
+
+    - name: Configure NTP
       copy:
         dest: /etc/ntp.conf
         content: |
@@ -20,7 +21,8 @@
           fudge 192.168.0.0 stratum 10
           driftfile /var/lib/ntp/drift
           keys /etc/ntp/keys
-    - name: Restart NTPD service
+
+    - name: Restart NTP service
       service:
         name: ntp
         state: restarted

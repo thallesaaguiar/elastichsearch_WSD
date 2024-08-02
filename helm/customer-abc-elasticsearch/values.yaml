@@ -1,62 +1,17 @@
-replicaCount: 1
-
+replicaCount: 3
 image:
   repository: docker.elastic.co/elasticsearch/elasticsearch
-  tag: "7.10.0"
+  tag: 7.10.2
   pullPolicy: IfNotPresent
-
 service:
   type: ClusterIP
   port: 9200
-
 resources:
   limits:
     cpu: 1000m
     memory: 2Gi
   requests:
-    cpu: 100m
+    cpu: 500m
     memory: 1Gi
-
-persistence:
-  enabled: true
-  storageClass: ""
-  accessModes:
-    - ReadWriteOnce
-  size: 5Gi
-
-global:
-  namespace: default
-  esURI: "http://elasticsearch.default.svc.cluster.local:9200"
-  name: "elasticsearch"
-  esVersion: "7"
-
-deployment:
-  serviceName: "elasticsearch"
-  containers:
-    images: "docker.elastic.co/elasticsearch/elasticsearch:7.10.0"
-    resources:
-      requests:
-        cpu: "100m"
-        memory: "1Gi"
-      limits:
-        cpu: "1000m"
-        memory: "2Gi"
-  volumeClaimTemplates:
-    storage: 5Gi
-    storageClassName: ""
-  clusterNodes: "elasticsearch-0,elasticsearch-1,elasticsearch-2"
-
-cluster:
-  initial_master_nodes: ["customer-abc-elasticsearch-0"]
-  discovery.seed_hosts: ["customer-abc-elasticsearch-0"]
-
-node:
-  master: true
-  data: true
-  ingest: true
-  name: customer-abc-elasticsearch
-
-network:
-  host: 0.0.0.0
-
-mysecret: "some-secret-value"
+elasticsearch:
+  password: admin

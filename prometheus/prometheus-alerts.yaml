@@ -1,19 +1,19 @@
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: example-prometheus-rule
+  name: prometheus-alerts
   labels:
-    prometheus: example
     role: alert-rules
-spec:
-  groups:
-  - name: example
-    rules:
-    - alert: HighMemoryUsage
-      expr: container_memory_usage_bytes > 500000000
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: "High memory usage detected"
-        description: "Container memory usage is above 500MB for more than 5 minutes."
+data:
+  alert.rules: |
+    groups:
+    - name: example
+      rules:
+      - alert: HighMemoryUsage
+        expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Node memory is low"
+          description: "Node memory is below 10% for more than 5 minutes."

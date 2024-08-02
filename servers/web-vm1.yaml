@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-vm1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-vm1
+  template:
+    metadata:
+      labels:
+        app: web-vm1
+    spec:
+      containers:
+      - name: web-vm1
+        image: ubuntu:latest
+        command: ["/bin/bash", "-c", "--"]
+        args: ["apt-get update && apt-get install -y nginx && nginx -g 'daemon off;'"]
+        ports:
+        - containerPort: 80

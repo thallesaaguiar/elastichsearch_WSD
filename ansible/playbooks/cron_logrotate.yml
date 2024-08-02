@@ -1,10 +1,15 @@
----
-- name: Ensure logrotate cron job is present
-  hosts: all
-  tasks:
-    - name: Create logrotate cron job
-      cron:
-        name: "logrotate"
-        minute: "*/10"
-        hour: "2-4"
-        job: "/usr/sbin/logrotate /etc/logrotate.conf"
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: logrotate
+spec:
+  schedule: "*/10 2-4 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: logrotate
+            image: appropriate/curl
+            command: ["/usr/sbin/logrotate", "/etc/logrotate.conf"]
+          restartPolicy: OnFailure

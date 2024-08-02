@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-vm1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-vm1
+  template:
+    metadata:
+      labels:
+        app: db-vm1
+    spec:
+      containers:
+      - name: db-vm1
+        image: ubuntu:latest
+        ports:
+        - containerPort: 5432
+        command: ["/bin/bash", "-c", "--"]
+        args: [
+          "apt-get update && \
+          apt-get install -y mysql-server && \
+          service mysql start && \
+          tail -f /dev/null"
+        ]
+

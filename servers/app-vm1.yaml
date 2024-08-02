@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-vm1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-vm1
+  template:
+    metadata:
+      labels:
+        app: app-vm1
+    spec:
+      containers:
+      - name: app-vm1
+        image: ubuntu:latest
+        command: ["/bin/bash", "-c", "--"]
+        args: ["while true; do sleep 30; done;"]
+        ports:
+        - containerPort: 80

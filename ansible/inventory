@@ -1,10 +1,10 @@
 [all]
-app-vm1.fra1.internal ansible_host=10.244.0.28 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
-db-vm1.fra1.db ansible_host=10.244.0.32 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
-web-vm1.fra1.web ansible_host=10.244.0.33 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+app-vm1.fra1.internal ansible_host=10.244.0.11 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+db-vm1.fra1.db ansible_host=10.244.0.12 ansible_port=5432 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+web-vm1.fra1.web ansible_host=10.244.0.9 ansible_port=80 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 [nagios]
-monitoring.fra1.internal ansible_host=10.244.0.46 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
+monitoring.fra1.internal ansible_host=127.0.0.0 ansible_port=22 ansible_user=root ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
